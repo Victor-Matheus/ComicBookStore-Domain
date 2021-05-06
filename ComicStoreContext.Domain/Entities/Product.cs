@@ -7,16 +7,16 @@ namespace ComicStoreContext.Domain.Entities
     {
         public Product(string title, string description, Price price)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString().Replace("-","");
             Title = title;
             Description = description;
             Price = price;
         }
 
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public Price Price { get; set; }
+        public string Id { get; private set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public Price Price { get; private set; }
 
     }
 }

@@ -8,17 +8,15 @@ namespace ComicStoreContext.Domain.Entities
     {
         public Purchase(Client client, IList<Product> products, Price amount, Price totalPaid)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString().Replace("-","");
             Client = client;
             Products = products;
             Amount = amount;
-            TotalPaid = totalPaid;
         }
 
-        public Guid Id { get; set; }
-        public Client Client { get; set; }
-        public IList<Product> Products { get; set; }
-        public Price Amount { get; set; }
-        public Price TotalPaid { get; set; }
+        public string Id { get; private set; }
+        public Client Client { get; private set; }
+        public IList<Product> Products { get; private set; }
+        public Price Amount { get; private set; }
     }
 }
