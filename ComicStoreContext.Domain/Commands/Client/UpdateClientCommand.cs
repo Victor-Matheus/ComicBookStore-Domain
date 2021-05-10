@@ -1,8 +1,9 @@
 using ComicStoreContext.Domain.Commands.Contracts;
+using Flunt.Notifications;
 
 namespace ComicStoreContext.Domain.Commands.Client
 {
-    public class UpdateClientCommand : ICommand
+    public class UpdateClientCommand : Notifiable, ICommand
     {
         public string Id { get; set; }
         public string FirstName { get; set; }

@@ -5,7 +5,7 @@ using Flunt.Notifications;
 
 namespace ComicStoreContext.Domain.Handlers
 {
-    public class Purchase :
+    public class PurchaseHandler :
         Notifiable,
         IHandler<CreatePurchaseCommand>
     {
