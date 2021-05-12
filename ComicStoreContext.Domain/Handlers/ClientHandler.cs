@@ -58,13 +58,20 @@ namespace ComicStoreContext.Domain.Handlers
 
             var client = new Client(name, email, document, password);
 
-            _repository.Create(client);
+            var repositoryResponse = _repository.Create(client);
+
+            if (repositoryResponse == Enums.EDbStatusReturn.DB_SAVED_OK) return new CommandResult(
+                 HttpStatusCode.Created,
+                 true,
+                 "User successfully created",
+                 client
+             );
 
             return new CommandResult(
-                HttpStatusCode.Created,
-                true,
-                "User successfully created",
-                client
+                HttpStatusCode.InternalServerError,
+                false,
+                "There was a problem with the request",
+                command.Notifications
             );
         }
 
