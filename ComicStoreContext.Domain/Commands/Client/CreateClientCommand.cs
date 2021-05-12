@@ -1,5 +1,6 @@
 using ComicStoreContext.Domain.Commands.Contracts;
 using Flunt.Notifications;
+using Flunt.Validations;
 
 namespace ComicStoreContext.Domain.Commands.Client
 {
@@ -14,7 +15,11 @@ namespace ComicStoreContext.Domain.Commands.Client
 
         public void Validate()
         {
-            throw new System.NotImplementedException();
+            AddNotifications(
+                new Contract()
+                    .Requires()
+                    .IsGreaterOrEqualsThan(Password.Length, 6, "CreateClientCommand.Password", "The password must contain at least 6 characters")
+            );
         }
     }
 }

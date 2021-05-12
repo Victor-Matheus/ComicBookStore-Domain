@@ -84,7 +84,57 @@ namespace ComicStoreContext.Domain.Handlers
                  "Missing or invalid data",
                  command.Notifications
              );
-            throw new System.NotImplementedException();
+
+            var _client = _repository.GetClientById(command.Id);
+
+            if (_client == null) return new CommandResult(
+                 HttpStatusCode.NotFound,
+                 false,
+                 "Client not found",
+                 command.Notifications
+             );
+
+            var name = new Name(command.FirstName ?? _client.Name.FirstName, command.LastName ?? _client.Name.LastName);
+            var email = new Email(command.Email ?? _client.Email.Address);
+            var document = new Document(command.DocumentType, command.DocumentNumber);
+            var password = command.Password;
+            IList<dynamic> notifications = new List<dynamic>();
+            notifications.Add(name.Notifications);
+            notifications.Add(email.Notifications);
+            notifications.Add(document.Notifications);
+
+            if (name.Invalid || email.Invalid || document.Invalid)
+                return new CommandResult(
+                    HttpStatusCode.BadRequest,
+                    false,
+                    "Invalid data",
+                    notifications
+                );
+
+            _client.UpdateClient(name, email, document, password);
+            var repositoryResponse = _repository.Update(_client);
+
+            var returnObject = new {
+                id = _client.Id,
+                firstName = _client.Name.FirstName,
+                lastName = _client.Name.LastName,
+                Document = _client.Document,
+                email = _client.Email.Address
+            };
+
+            if(repositoryResponse == Enums.EDbStatusReturn.DB_SAVED_OK) return new CommandResult(
+                HttpStatusCode.OK,
+                true,
+                "Client updated successfully",
+                returnObject
+            );
+
+            return new CommandResult(
+                HttpStatusCode.InternalServerError,
+                false,
+                "There was a problem with the request",
+                command.Notifications
+            );
         }
     }
 }

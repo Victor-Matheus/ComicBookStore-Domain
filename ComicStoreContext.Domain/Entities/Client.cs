@@ -7,7 +7,7 @@ namespace ComicStoreContext.Domain.Entities
     {
         public Client(Name name, Email email, Document document, string password)
         {
-            Id = Guid.NewGuid().ToString().Replace("-","");
+            Id = Guid.NewGuid().ToString().Replace("-", "");
             Name = name;
             Email = email;
             Document = document;
@@ -19,5 +19,13 @@ namespace ComicStoreContext.Domain.Entities
         public Email Email { get; private set; }
         public Document Document { get; private set; }
         public string Password { get; private set; }
+
+        public void UpdateClient(Name name, Email email, Document document, string password)
+        {
+            Name = name;
+            Email = email;
+            Document = document;
+            Password = password;
+        }
     }
 }
